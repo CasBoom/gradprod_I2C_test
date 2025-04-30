@@ -1,24 +1,19 @@
-/*
-Read the temperature from an LM75-derived temperature sensor, and display it
-in Celcius every 250ms. Any LM75-derived temperature should work.
-*/
+//! \file
+
 
 #include <Temperature_LM75_Derived.h>
 #include "Wire.h"
 #include "I2C_eeprom.h"
 
+//! EEPROM object, taken the device size and address as inputs
 I2C_eeprom ee(0x50, I2C_DEVICESIZE_24LC64);
-
-uint32_t start, dur1, dur2;
-// The Generic_LM75 class will provide 9-bit (±0.5°C) temperature for any
-// LM75-derived sensor. More specific classes may provide better resolution.
+//! LM75 sensor object, takes no arguments
 Generic_LM75 temperature;
 
+//! Sets up the program and checks the I2C EEPROM chip 
 void setup() {
   Serial.begin(9600);
   Wire.begin();
-
-  
   ee.begin();
   if (! ee.isConnected())
   {
@@ -51,6 +46,7 @@ void setup() {
   }
 }
 
+//! Constant loop that prints the temperature
 void loop() {
   Serial.print("Temperature: ");
   Serial.print(temperature.readTemperatureC());
